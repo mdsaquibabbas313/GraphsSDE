@@ -1,0 +1,72 @@
+Uber
+14
+Amazon
+10
+Google
+8
+Facebook
+8
+Snapchat
+5
+tiktok
+4
+Adobe
+3
+Bloomberg
+2
+BlackRock
+2
+
+
+
+
+
+
+
+
+class Solution {
+public:
+    void dfs(string src , string dest , unordered_map<string , vector<pair<string , double>>>& adj ,unordered_set<string>& vis, double prod , double& ans) {
+        if(vis.find(src) != vis.end()) {
+            return ;
+        }
+        
+        vis.insert(src);
+        
+        if(src == dest) {
+            ans = prod;
+            return ;
+        }
+        
+        for(auto v : adj[src]) {
+            dfs(v.first , dest , adj , vis , prod*v.second , ans);
+        }
+    }
+    vector<double> calcEquation(vector<vector<string>>& equations, vector<double>& values, vector<vector<string>>& queries) {
+        vector<double> res;
+        unordered_map<string , vector<pair<string , double>>> adj;
+        for(int i = 0 ; i<equations.size() ; i++) {
+            adj[equations[i][0]].push_back({equations[i][1] , values[i]});
+            adj[equations[i][1]].push_back({equations[i][0] , 1.0/values[i]});
+        }
+        
+        
+        
+        for(int i = 0 ; i<queries.size() ; i++) {
+            string src = queries[i][0];
+            string dest = queries[i][1];
+            
+            
+            double ans = -1.0;
+            double prod = 1.0;
+            
+            if(adj.find(src) != adj.end()) {
+                unordered_set<string> vis;
+                dfs(src , dest , adj , vis , prod , ans);
+            }
+            res.push_back(ans);
+            
+        }
+        return res;
+    }
+};
