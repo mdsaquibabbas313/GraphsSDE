@@ -1,0 +1,37 @@
+class Solution {
+  public:
+    // Function to detect cycle in a directed graph.
+    
+    bool isCycle(int u , vector<bool>& inRecursion , vector<bool>& vis , vector<int> adj[]) {
+        vis[u] = true;
+        inRecursion[u] = true;
+        
+        
+        for(auto &v : adj[u]) {
+            if(!vis[v]) {
+                if(isCycle(v , inRecursion , vis , adj)) {
+                    return true;
+                }
+            } else if(inRecursion[v]) return true;
+        }
+        
+        inRecursion[u] = false;
+        return false;
+    }
+    bool isCyclic(int V, vector<int> adj[]) {
+        
+        
+        vector<bool> inRecursion(V , false);
+        
+        vector<bool> vis(V , false);
+        
+        
+        for(int i = 0 ; i<V ; i++) {
+            if(!vis[i] && isCycle(i , vis  , inRecursion , adj)) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+};
