@@ -1,0 +1,50 @@
+class Solution {
+  public:
+    bool isCyclic(int V, vector<int> adj[]) {
+        
+       vector<int> inDegree(V , 0),ans;
+        
+        
+        //step 1
+        for(int i = 0 ; i<V ; i++) {
+            
+            for(auto &v : adj[i]) {
+                inDegree[v]++;
+            }
+            
+        }
+        
+        queue<int> que;
+        
+        //step 2
+        for(int i = 0 ; i<V ; i++) {
+            if(inDegree[i] == 0) {
+                
+                
+                que.push(i);
+                
+                
+            }
+        }
+        
+        
+        int count = 0;
+        
+        while(!que.empty()) {
+            auto u = que.front();que.pop();
+            
+            count++;
+            
+            for(auto &v : adj[u]) {
+                inDegree[v]--;
+                
+                if(inDegree[v] == 0){
+                    que.push(v);
+                }
+            }
+        }
+        
+        return count == V ? 0 : 1;
+       
+    }
+};
